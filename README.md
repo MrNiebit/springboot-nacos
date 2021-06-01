@@ -1,19 +1,35 @@
-# Getting Started
+# Spring Boot Nacos 配置 demo
 
-### Reference Documentation
 
-For further reference, please consider the following sections:
+## 下载启动nacos window版
 
-* [Official Apache Maven documentation](https://maven.apache.org/guides/index.html)
-* [Spring Boot Maven Plugin Reference Guide](https://docs.spring.io/spring-boot/docs/2.5.0/maven-plugin/reference/html/)
-* [Create an OCI image](https://docs.spring.io/spring-boot/docs/2.5.0/maven-plugin/reference/html/#build-image)
-* [Spring Web](https://docs.spring.io/spring-boot/docs/2.5.0/reference/htmlsingle/#boot-features-developing-web-applications)
+nacos下载地址：[https://github.com/alibaba/nacos/releases/download/2.0.1/nacos-server-2.0.1.zip](https://github.com/alibaba/nacos/releases/download/2.0.1/nacos-server-2.0.1.zip)
 
-### Guides
+解压后启动
+单机启动
+```bash
+startup.cmd -m standalone
+```
 
-The following guides illustrate how to use some features concretely:
+## 配置nacos
 
-* [Building a RESTful Web Service](https://spring.io/guides/gs/rest-service/)
-* [Serving Web Content with Spring MVC](https://spring.io/guides/gs/serving-web-content/)
-* [Building REST services with Spring](https://spring.io/guides/tutorials/bookmarks/)
+![](https://ftp.bmp.ovh/imgs/2021/06/c1236056523aeb5d.png)
 
+![](https://ftp.bmp.ovh/imgs/2021/06/ea2ae1815f7521cb.png)
+
+## 启动 spring boot
+
+```java
+    /*
+    * autoRefreshed: true ==> 在nacos上修改后，实时更新
+    * false 时，如果修改了内容，需要服务重启 才能更新
+    * */
+
+    @NacosValue(value = "${useLocalCache:false}", autoRefreshed = true)
+    private boolean useLocalCache;
+
+    @NacosValue(value = "${nacos.param.content:null}", autoRefreshed = false)
+    private String content;
+```
+启动类增加 该注解 `@NacosPropertySource(dataId = "example", autoRefreshed = true)`
+example 为 dataId
